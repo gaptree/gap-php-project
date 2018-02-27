@@ -2,6 +2,7 @@
 
 - Installation
 - Local Development Environment
+- Init Setting
 - Get started
 
 ## Installation
@@ -63,6 +64,41 @@ server {
 
 ```
 
+## Init Setting
+
+```shell
+$ cp setting/setting.local-default.php setting/setting.local.php
+```
+
+```php
+<?php
+$collection = new \Gap\Config\ConfigCollection();
+
+$collection
+    ->set('debug', true)
+    ->set('baseHost', 'tecposter.cn')
+    ->set('front', [
+        'port' => 8787
+    ])
+    ->set('local', [
+        'db' => [
+            'host' => 'db',
+            'database' => 'tecposter',
+            'username' => 'tecposter',
+            'password' => '123456789'
+        ],
+        'cache' => [
+            'host' => 'redis'
+        ],
+        'session' => [
+            'save_handler' => 'redis',
+            'save_path' => 'tcp://redis:6379?database=10',
+            'subdomain' => 'www'
+        ]
+    ]);
+
+return $collection;
+```
 ## Get started
 
 Create App
