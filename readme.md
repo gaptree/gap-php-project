@@ -4,6 +4,7 @@
 - Local Development Environment
 - Init Setting
 - Get started
+- Testing
 
 ## Installation
 
@@ -105,11 +106,15 @@ Create App
 
 ```shell
 $ composer gap buildApp tec/portal
+or 
+$ composer gap buildApp 'Tec\Portal'
 ```
 
 Create Module
 ```shell
 $ composer gap buildModule tec/portal/landing
+or
+$ composer gap buildModule 'Tec\Portal\Landing'
 ```
 
 Create route
@@ -131,4 +136,12 @@ Create ui entity
 
 ```shell
 $ composer gap buildEntity tec/portal/landing/ui/homeUi
+or
+$ composer gap buildEntity 'Tec\Portal\Landing\Ui\HomeUi'
+```
+
+## Testing
+
+```
+$ composer test
 ```
