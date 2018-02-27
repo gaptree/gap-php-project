@@ -1,0 +1,18 @@
+{
+    "name": "gap/project",
+    "description": "Gap Project",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "zhanjh",
+            "email": "zhanjh@126.com"
+        }
+    ],
+    "require": {
+        "gap/base": "^2.0"
+    },
+    "require-dev": {
+        "gap/util": "^2.0"
+    }
+}

@@ -1,6 +1,36 @@
-composer.phar
-/vendor/
+.*.swp
+.DS_Store
+.DS_Store?
+#._*
 
-# Commit your application's lock file http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file
-# You may choose to ignore a library lock file http://getcomposer.org/doc/02-libraries.md#lock-file
-# composer.lock
+.Spotlight-V100
+.Trashes
+
+.phpcomplete_extended/
+.idea/*
+.vscode
+
+**/.idea/*
+**/*.map
+**/*.local.js
+**/*.local.php
+**/*.local.json
+
+#**/*.lock
+**/*.bak
+**/*.bk
+**/_bk-*
+**/.bk-*
+
+ehthumbs.db
+Thumbs.db
+dump.rdb
+npm-debug.log
+npm-debug.log
+Session.vim
+#composer.lock
+#package-lock.json
+tags
+
+vendor/
+node_modules/

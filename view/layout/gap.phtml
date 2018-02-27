@@ -1,0 +1,25 @@
+<?php
+$localeKey = $this->getLocaleKey();
+
+$pageConfig = $this->pageConfig ? $this->pageConfig : [];
+$pageConfig = array_merge($pageConfig, [
+    'localeKey' => $localeKey,
+    'now' => micro_date()
+]);
+?><!DOCTYPE html>
+<html lang="<?php echo $localeKey; ?>" prefix="og: http://ogp.me/ns#">
+<head>
+<?php echo $this->insert('html/meta', ['localeKey', $localeKey]); ?>
+<?php $this->section('style'); ?><?php $this->stop(); ?>
+</head>
+
+<body>
+<?php $this->section('main'); ?><?php $this->stop(); ?>
+
+<script type="text/javascript">
+window.PageConfig=<?php echo json_encode($pageConfig); ?>;
+</script>
+<?php $this->section('script'); ?><?php $this->stop(); ?>
+</body>
+
+</html>
