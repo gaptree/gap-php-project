@@ -14,5 +14,20 @@
     },
     "require-dev": {
         "gap/util": "^2.0"
+    },
+    "scripts": {
+        "test": [
+            "@setting",
+            "@phpcs",
+            "@phpmd",
+            "@phpstan",
+            "@phpunit"
+        ],
+        "gap": "gap",
+        "setting": "gap jsonifySetting",
+        "phpunit": "phpunit",
+        "phpstan": "phpstan analyse -l 7 -c phpstan.neon app",
+        "phpcs": "phpcs --report=full --standard=psr2 --extensions=php app",
+        "phpmd": "phpmd app text cleancode,codesize,controversial,design,naming,unusedcode"
     }
 }
