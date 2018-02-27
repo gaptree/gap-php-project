@@ -53,11 +53,11 @@ $router = $routerBuilder->build();
 $siteManager = new \Gap\Http\SiteManager($config->get('site'));
 $httpHandler = new \Gap\Base\HttpHandler($app, $siteManager, $router);
 
-foreach ($config->get('requestFilter') as $requestFilterClass) {
+foreach ($config->get('requestFilter', []) as $requestFilterClass) {
     $httpHandler->getRequestFilterManager()->addFilter(new $requestFilterClass());
 }
 
-foreach ($config->get('routeFilter') as $routeFilterClass) {
+foreach ($config->get('routeFilter', []) as $routeFilterClass) {
     $httpHandler->getRouteFilterManager()->addFilter(new $routeFilterClass());
 }
 
