@@ -3,6 +3,7 @@ $collection = new \Gap\Config\ConfigCollection();
 
 $collection
     ->set('debug', true)
+    ->set('baseDir', realpath(__DIR__ . '/../'))
     ->set('baseHost', 'gap.sun')
     ->set('front', [
         'port' => 8787
