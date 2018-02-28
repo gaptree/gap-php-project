@@ -6,9 +6,8 @@ require $baseDir . '/vendor/autoload.php';
 // config
 //
 $configBuilder = new \Gap\Config\ConfigBuilder(
-    $baseDir,
-    'setting/setting.php',
-    'cache/setting-http.php'
+    $baseDir . '/setting',
+    $baseDir . '/cache/setting-http.php'
 );
 $config = $configBuilder->build();
 
@@ -22,11 +21,11 @@ if ($config->get('debug') !== false) {
 // app
 //
 $dmg = $config->has('db') ?
-    new \Gap\Database\DatabaseManager($config->get('db'), $config->get('server.id'))
+    new \Gap\Database\DatabaseManager($config->arr('db'), $config->config('server')->str('id'))
     :
     null;
 $cmg = $config->has('cache') ?
-    new \Gap\Cache\CacheManager($config->get('cache'))
+    new \Gap\Cache\CacheManager($config->arr('cache'))
     :
     null;
 
@@ -36,28 +35,28 @@ $app = new \Gap\Base\App($config, $dmg, $cmg);
 // httpHandler
 //
 $srcOpts = [];
-foreach ($config->get('app') as $appName => $appOpts) {
+foreach ($config->arr('app') as $appName => $appOpts) {
     $srcOpts[$appName]['dir'] = $appOpts['dir'] . '/setting/router';
 }
 
 $routerBuilder = new \Gap\Routing\RouterBuilder(
-    $config->get('baseDir'),
+    $config->str('baseDir'),
     $srcOpts
 );
-if (false === $config->get('debug')) {
+if (false === $config->bool('debug')) {
     $routerBuilder
         ->setCacheFile('cache/setting-router-http.php');
 }
 $router = $routerBuilder->build();
 
-$siteManager = new \Gap\Http\SiteManager($config->get('site'));
+$siteManager = new \Gap\Http\SiteManager($config->arr('site'));
 $httpHandler = new \Gap\Base\HttpHandler($app, $siteManager, $router);
 
-foreach ($config->get('requestFilter', []) as $requestFilterClass) {
+foreach ($config->arr('requestFilter') as $requestFilterClass) {
     $httpHandler->getRequestFilterManager()->addFilter(new $requestFilterClass());
 }
 
-foreach ($config->get('routeFilter', []) as $routeFilterClass) {
+foreach ($config->get('routeFilter') as $routeFilterClass) {
     $httpHandler->getRouteFilterManager()->addFilter(new $routeFilterClass());
 }
 

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "3726f764f0fbcdfa9214ae66827069c7",
+    "content-hash": "d31b218dbb58303980d552f6434e95cf",
     "packages": [
         {
             "name": "aura/html",
@@ -177,16 +177,16 @@
         },
         {
             "name": "gap/base",
-            "version": "v2.0.3",
+            "version": "v2.0.6",
             "source": {
                 "type": "git",
-                "url": "https://project.tecposter.cn/diffusion/63/gap-php-base.git",
-                "reference": "c953c786c8086b2463534f74a0f9e437a6e22232"
+                "url": "https://github.com/gaptree/gap-php-base",
+                "reference": "79d14c4967ccad61999f7e93e9b1997fcf7643aa"
             },
             "require": {
                 "foil/foil": "^0.6.7",
                 "gap/cache": "^1.0",
-                "gap/config": "^1.0",
+                "gap/config": "^2.0",
                 "gap/database": "^1.0",
                 "gap/dto": "^1.0",
                 "gap/http": "^1.0",
@@ -208,7 +208,31 @@
                     "fun/functions.php"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "autoload-dev": {
+                "psr-4": {
+                    "phpunit\\Gap\\Base\\": "phpunit"
+                }
+            },
+            "scripts": {
+                "test": [
+                    "@phpcs",
+                    "@phpmd",
+                    "@phpstan",
+                    "@phpunit"
+                ],
+                "phpunit": [
+                    "phpunit"
+                ],
+                "phpstan": [
+                    "phpstan analyse -l 7 -c phpstan.neon phpunit src"
+                ],
+                "phpcs": [
+                    "phpcs --report=full --standard=psr2 --extensions=php src phpunit"
+                ],
+                "phpmd": [
+                    "phpmd src,phpunit text cleancode,codesize,controversial,design,naming,unusedcode"
+                ]
+            },
             "authors": [
                 {
                     "name": "zhanjh",
@@ -220,7 +244,7 @@
             "keywords": [
                 "gap"
             ],
-            "time": "2018-02-25T10:00:15+00:00"
+            "time": "2018-02-28T09:42:31+00:00"
         },
         {
             "name": "gap/cache",
@@ -256,11 +280,17 @@
         },
         {
             "name": "gap/config",
-            "version": "1.0.0",
+            "version": "v2.0.2",
             "source": {
                 "type": "git",
-                "url": "https://project.tecposter.cn/diffusion/54/gap-php-config.git",
-                "reference": "d0397ede47eb363692b4afde68dd0505e1e25309"
+                "url": "https://github.com/gaptree/gap-php-config",
+                "reference": "54b2e1d664e3ec8466e6a889b168e4f2a5708dc5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://files.phpcomposer.com/files/gaptree/gap-php-config/54b2e1d664e3ec8466e6a889b168e4f2a5708dc5.zip",
+                "reference": "54b2e1d664e3ec8466e6a889b168e4f2a5708dc5",
+                "shasum": ""
             },
             "require": {
                 "php": ">=7.1.0"
@@ -283,7 +313,7 @@
             "keywords": [
                 "gap"
             ],
-            "time": "2017-12-03T12:56:40+00:00"
+            "time": "2018-02-28T08:32:44+00:00"
         },
         {
             "name": "gap/database",
@@ -1387,11 +1417,11 @@
         },
         {
             "name": "gap/util",
-            "version": "v2.0.1",
+            "version": "v2.0.3",
             "source": {
                 "type": "git",
-                "url": "https://project.tecposter.cn/diffusion/59/gap-php-util.git",
-                "reference": "e070a8febed297fc79ef79474a9502d68ce2b796"
+                "url": "https://github.com/gaptree/gap-php-util",
+                "reference": "d05c07735dcf6da3e81afe1bc252564c4f644f0b"
             },
             "require": {
                 "filp/whoops": "^2.1",
@@ -1406,7 +1436,31 @@
                     "Gap\\Util\\": "src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "autoload-dev": {
+                "psr-4": {
+                    "phpunit\\Gap\\Util\\": "phpunit"
+                }
+            },
+            "scripts": {
+                "test": [
+                    "@phpcs",
+                    "@phpmd",
+                    "@phpstan",
+                    "@phpunit"
+                ],
+                "phpunit": [
+                    "phpunit"
+                ],
+                "phpstan": [
+                    "phpstan analyse -l 7 -c phpstan.neon phpunit src"
+                ],
+                "phpcs": [
+                    "phpcs --report=full --standard=psr2 --extensions=php src phpunit"
+                ],
+                "phpmd": [
+                    "phpmd src,phpunit text cleancode,codesize,controversial,design,naming,unusedcode"
+                ]
+            },
             "authors": [
                 {
                     "name": "zhanjh",
@@ -1414,11 +1468,11 @@
                 }
             ],
             "description": "Gap Util",
-            "homepage": "https://project.tecposter.cn/diffusion/59/",
+            "homepage": "https://github.com/gaptree/gap-php-util",
             "keywords": [
                 "gap"
             ],
-            "time": "2018-02-26T02:18:19+00:00"
+            "time": "2018-02-28T09:53:03+00:00"
         },
         {
             "name": "jean85/pretty-package-versions",
