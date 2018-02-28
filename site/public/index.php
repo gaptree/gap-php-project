@@ -11,7 +11,7 @@ $configBuilder = new \Gap\Config\ConfigBuilder(
 );
 $config = $configBuilder->build();
 
-if ($config->get('debug') !== false) {
+if ($config->bool('debug') !== false) {
     $whoops = new \Whoops\Run;
     $whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler);
     $whoops->register();
@@ -56,7 +56,7 @@ foreach ($config->arr('requestFilter') as $requestFilterClass) {
     $httpHandler->getRequestFilterManager()->addFilter(new $requestFilterClass());
 }
 
-foreach ($config->get('routeFilter') as $routeFilterClass) {
+foreach ($config->arr('routeFilter') as $routeFilterClass) {
     $httpHandler->getRouteFilterManager()->addFilter(new $routeFilterClass());
 }
 
