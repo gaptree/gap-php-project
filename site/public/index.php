@@ -71,5 +71,10 @@ $request = new \Gap\Http\Request(
     $_FILES,
     $_SERVER
 );
+
+$request->setSession(
+    (new \Gap\Http\Session\SessionBuilder($config->arr('session')))->build()
+);
+
 $response = $httpHandler->handle($request);
 $response->send();
