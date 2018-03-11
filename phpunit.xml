@@ -1,0 +1,7 @@
+<phpunit bootstrap="vendor/autoload.php">
+    <testsuites>
+        <testsuite name="gap/project">
+            <directory>app/gap/project/phpunit</directory>
+        </testsuite>
+    </testsuites>
+</phpunit>

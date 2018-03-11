@@ -19,12 +19,6 @@
         "squizlabs/php_codesniffer": "^3.2",
         "phpmd/phpmd": "^2.6"
     },
-    "repositories": {
-        "0": {
-            "type": "git",
-            "url": "https://github.com/gaptree/gap-php-base"
-        }
-    },
     "scripts": {
         "test": [
             "@setting",
@@ -39,5 +33,15 @@
         "phpstan": "phpstan analyse -l 7 -c phpstan.neon app",
         "phpcs": "phpcs --report=full --standard=psr2 --extensions=php app",
         "phpmd": "phpmd app text cleancode,codesize,controversial,design,naming,unusedcode"
+    },
+    "autoload": {
+        "psr-4": {
+            "Gap\\Project\\": "app/gap/project/src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "phpunit\\Gap\\Project\\": "app/gap/project/phpunit"
+        }
     }
 }
