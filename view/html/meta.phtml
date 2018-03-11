@@ -1,22 +1,25 @@
 <?php
 $route = $this->route->getName();
 
-$metaTitle = $this->meta("title-$route", $this->metaTitleVars);
-$metaDescription = $this->meta("description-$route", $this->metaDescriptionVars);
+$metaTitleVars = is_array($this->metaTitleVars) ? $this->metaTitleVars : [];
+$metaDescriptionVars = is_array($this->metaDescriptionVars) ? $this->metaDescriptionVars : [];
+$metaKeywordsVars = is_array($this->metaKeywordsVars) ? $this->metaKeywordsVars : [];
 
-$metaKeywords = null;
-if ($this->isKeywords || $this->metaKeywordsVars) {
-    $metaKeywords = $this->meta("keywords-$route", $this->metaKeywordsVars);
+$metaTitle = $this->meta->get("title-$route", ...$metaTitleVars);
+$metaDescription = $this->meta->get("description-$route", ...$metaDescriptionVars);
+
+if ($metaKeywordsVars) {
+    $metaKeywords = $this->meta->get("keywords-$route", ...$metaKeywordsVars);
 }
 ?>
 <title><?php echo $metaTitle; ?></title>
 <meta name="description" content="<?php echo $metaDescription; ?>">
-<?php if ($metaKeywords) { ?>
+<?php if ($metaKeywordsVars) { ?>
     <meta name="keywords" content="<?php echo $metaKeywords; ?>">
 <?php } ?>
 
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="<?php echo $this->meta('siteName'); ?>">
+<meta property="og:site_name" content="<?php echo $this->meta->get('siteName'); ?>">
 <meta property="og:locale" content="<?php echo $this->getLocaleKey(); ?>">
 <meta property="og:titile" content="<?php echo $metaTitle; ?>">
 <meta property="og:description" content="<?php echo $metaDescription; ?>">

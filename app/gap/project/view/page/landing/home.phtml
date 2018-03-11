@@ -1,0 +1,12 @@
+<?php $this->layout('layout/gap', [
+    'metaTitleVars' => ['hello', 'gap']
+]); ?>
+
+<?php $this->section('main'); ?>
+<h1>gap</h1>
+<h3><?php echo $this->trans('test'); ?></h3>
+<p>
+    <?php echo $this->trans('with-vars', 'v1', 'v2'); ?>
+    <?php echo $this->localeTrans('en-us', 'with-vars', 'v1', 'v2'); ?>
+</p>
+<?php $this->replace(); ?>

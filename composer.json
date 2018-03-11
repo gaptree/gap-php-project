@@ -34,6 +34,32 @@
         "phpcs": "phpcs --report=full --standard=psr2 --extensions=php app",
         "phpmd": "phpmd app text cleancode,codesize,controversial,design,naming,unusedcode"
     },
+    "repositories": {
+        "0": {
+            "type": "git",
+            "url": "https://github.com/gaptree/gap-php-db"
+        },
+        "1": {
+            "type": "git",
+            "url": "https://github.com/gaptree/gap-php-base"
+        },
+        "2": {
+            "type": "git",
+            "url": "https://github.com/gaptree/gap-php-meta"
+        },
+        "3": {
+            "type": "git",
+            "url": "https://github.com/gaptree/gap-php-i18n"
+        },
+        "4": {
+            "type": "git",
+            "url": "https://github.com/gaptree/gap-php-user"
+        },
+        "5": {
+            "type": "git",
+            "url": "https://github.com/gaptree/gap-php-util"
+        }
+    },
     "autoload": {
         "psr-4": {
             "Gap\\Project\\": "app/gap/project/src"
