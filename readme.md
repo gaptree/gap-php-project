@@ -1,10 +1,15 @@
 # Gap Project Quickstart
 
-- Installation
-- Local Development Environment
-- Init Setting
-- Get started
-- Testing
+- [Installation](#installation)
+- [Nginx](#nginx)
+- [Init Project Setting](#init-project-setting)
+- [Manage App](#manage-app)
+- [Manage Module](#manage-module)
+- [Manage Entity](#manage-entity)
+    - [Create Html Page](#create-html-page)
+    - [Create Service](#create-service)
+    - [Create Repo](#create-repo)
+- [Testing](#testing)
 
 ## Installation
 
@@ -12,9 +17,7 @@
 $ composer create-project gap/project your-project-name 1.0.*
 ```
 
-## Local Development Environment
-
-### Nginx
+## Nginx
 
 ```nginx
 server {
@@ -65,7 +68,7 @@ server {
 
 ```
 
-## Init Setting
+## Init Project Setting
 
 ```shell
 $ cp setting/setting.local-default.php setting/setting.local.php
@@ -100,44 +103,131 @@ $collection
 
 return $collection;
 ```
-## Get started
+
+## Manage App
 
 Create App
 
 ```shell
-$ composer gap buildApp tec/portal
+$ composer gap buildApp gap/project
 or 
-$ composer gap buildApp 'Tec\Portal'
+$ composer gap buildApp 'Gap\Project'
 ```
+
+List App
+
+```shell
+$ composer gap listApp
+```
+
+Remove App
+
+```shell
+$ composer removeApp 'Gap\Project'
+```
+
+## Manage Module
 
 Create Module
+
 ```shell
-$ composer gap buildModule tec/portal/landing
+$ composer gap buildModule gap/project/landing
 or
-$ composer gap buildModule 'Tec\Portal\Landing'
+$ composer gap buildModule 'Gap\Project\Landing'
 ```
 
-Create route
+List Module
+
+```
+$ composer gap listModule
+```
+
+Remove Module
+
+```shell
+$ composer gap removeModule 'Gap\Project\Landing'
+```
+
+## Manage Entity
+
+### Create Html Page
+
+#### 1. Create Route
+
 ```php
 <?php
 /*
- * app/wec/order/setting/router/landing.php
+ * app/gap/project/setting/router/landing.php
  */
 $collection = new \Gap\Routing\RouteCollection();
 $collection
     ->site('www')
     ->access('public')
 
-    ->get('/', 'home', 'Tec\Portal\Landing\Ui\HomeUi@show')
+    ->get('/', 'home', 'Gap\Project\Landing\Ui\HomeUi@show')
 return $collection;
 ```
 
-Create ui entity
+#### 2. Create Ui Entity
 
 ```shell
 $ composer gap buildEntity tec/portal/landing/ui/homeUi
 or
 $ composer gap buildEntity 'Tec\Portal\Landing\Ui\HomeUi'
+```
+
+```php
+<?php
+/**
+ * app/gap/project/src/Landing/Ui/HomeUi.php
+ **/
+namespace Gap\Project\Landing\Ui;
+
+use Gap\Http\Response;
+
+class HomeUi extends UiBase
+{
+    public function show(): Response
+    {
+        return new Response('Hello World');
+        // or
+        return $this->view('page/landing/home');
+    }
+}
+```
+
+#### 3. Create php template
+
+Location: `app/gap/project/view/page/landing/home.phtml`
+
+```php
+<?php $this->layout('layout/gap', [
+    'metaTitleVars' => ['hello', 'gap']
+]); ?>
+
+<?php $this->section('main'); ?>
+<h1>gap</h1>
+<h3><?php echo $this->trans('Home Page'); ?></h3>
+<p>
+    <?php echo $this->trans('Hello', 'Mike'); ?>
+    <?php echo $this->localeTrans('en-us', 'Hello', 'v1', 'v2'); ?>
+</p>
+<?php $this->replace(); ?>
+```
+
+More detials about the template engine, please check <https://foilphp.github.io/Foil/>
+
+
+### Create Service
+
+```shell
+$ composer gap buildEntity 'Gap\Project\Landing\Service\CreateArticleService'
+```
+
+### Create Repo
+
+```shell
+$ composer gap buildEntity 'Gap\Project\Landing\Repo\CreateArticleRepo'
 ```
 
 ## gap/db
@@ -345,8 +435,6 @@ $this->assertEquals(
     $usb->sql()
 );
 ```
-
-
 
 Sql Syntax
 - select <https://dev.mysql.com/doc/refman/5.7/en/select.html>
