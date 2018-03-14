@@ -140,6 +140,265 @@ or
 $ composer gap buildEntity 'Tec\Portal\Landing\Ui\HomeUi'
 ```
 
+## gap/db
+
+```php
+<?php
+// Create Database Manager
+$dmg = new \Gap\Db\DbManager([
+    'default' => [
+        'driver' => 'mysql',
+        'charset' => 'utf8mb4',
+        'collation' => 'utf8mb4_unicode_ci',
+        'database' => '%local.db.database%',
+        'host' => '%local.db.host%',
+        'username' => '%local.db.username%',
+        'password' => '%local.db.password%'
+    ],
+    'i18n' => [
+        'charset' => 'utf8mb4',
+        'collation' => 'utf8mb4_unicode_ci',
+        'driver' => 'mysql',
+        'database' => '%local.db.database%',
+        'host' => '%local.db.host%',
+        'username' => '%local.db.username%',
+        'password' => '%local.db.password%'
+    ],
+]);
+
+// Connect database
+$cnn = $dmg->connect('default');
+
+$ssb = $cnn->ssb(); // Select Sql Builder
+$isb = $cnn->isb(); // Insert Sql Builder
+$usb = $cnn->usb(); // Update Sql Builder
+$dsb = $cnn->dsb(); // Delete Sql Buider
+```
+
+### Example
+
+select sql builder
+
+```php
+<?php
+$ssb->select('a.*', 'b.col1', 'b.col2')
+    ->from('tableA a', 'tableB b')->end() // end tablePart
+    ->where()
+        ->expect('a.col1')->equal()->str('v1')
+    ->end(); // end condPart (condition part)
+
+$this->assertEquals(
+    'SELECT a.*, b.col1, b.col2'
+    . ' FROM tableA a, tableB b'
+    . ' WHERE a.col1 = :k1'
+    . ' LIMIT 10 OFFSET 0',
+    $ssb->sql()
+);
+
+ $ssb = $cnn->ssb()
+    ->select('a.*', 'b.col1', 'b.col2')
+    ->from('tableA a', 'tableB b')->end() // end tablePart
+    ->where()
+        ->expect('a.col1')->like()->str('%hello%')
+    ->end(); // end condPart
+$this->assertEquals(
+    'SELECT a.*, b.col1, b.col2'
+    . ' FROM tableA a, tableB b'
+    . ' WHERE a.col1 LIKE :k1'
+    . ' LIMIT 10 OFFSET 0',
+    $ssb->sql()
+);
+
+
+$ssb = $cnn->ssb()
+    ->select('a.*', 'b.col1', 'b.col2')
+    ->from('tableA a', 'tableB b')
+        ->leftJoin('tableC c', 'tableD d')
+        ->onCond()
+            ->expect('c.col1')->equal()->expr('a.col1')
+            ->andExpect('d.col2')->equal()->expr('b.col2')
+        ->endJoin()
+    ->end()
+    ->where()
+        ->expect('a.col1')->greater()->int(9)
+        ->andGroup()
+            ->expect('a.col2')->equal()->str('v2')
+            ->orExpect('a.col3')->equal()->int(3)
+        ->endGroup()
+        ->andExpect('a.col4')->equal()->dateTime(new \DateTime())
+    ->end()
+    ->ascGroupBy('a.col1')
+    ->descOrderBy('a.col2')
+    ->limit(28)->offset(3);
+$this->assertEquals(
+    'SELECT a.*, b.col1, b.col2'
+    . ' FROM tableA a, tableB b'
+    . ' LEFT JOIN tableC c, tableD d'
+    . ' ON c.col1 = a.col1 AND d.col2 = b.col2'
+    . ' WHERE a.col1 > :k1'
+    . ' AND (a.col2 = :k2 OR a.col3 = :k3)'
+    . ' AND a.col4 = :k4'
+    . ' GROUP BY a.col1 ASC'
+    . ' ORDER BY a.col2 DESC'
+    . ' LIMIT 28 OFFSET 3',
+    $ssb->sql()
+);
+```
+
+delete sql builder
+```php
+<?php
+$dsb = $cnn->dsb()
+    ->delete('a', 'b', 'c')
+    ->from('tableA a', 'tableB b')
+        ->leftJoin('tableC c', 'tableD d')
+        ->onCond()
+            ->expect('c.col1')->equal()->expr('a.col1')
+            ->andExpect('d.col2')->equal()->expr('b.col2')
+        ->endJoin()
+    ->end()
+    ->where()
+        ->expect('a.col1')->greater()->int(9)
+        ->andGroup()
+            ->expect('a.col2')->equal()->str('v2')
+            ->orExpect('a.col3')->equal()->int(3)
+        ->endGroup()
+        ->andExpect('a.col4')->equal()->dateTime(new \DateTime())
+    ->end()
+    ->limit(28)->offset(3)
+    ->ascGroupBy('a.col1')
+    ->descOrderBy('a.col2');
+$this->assertEquals(
+    'DELETE a, b, c'
+    . ' FROM tableA a, tableB b'
+    . ' LEFT JOIN tableC c, tableD d'
+    . ' ON c.col1 = a.col1 AND d.col2 = b.col2'
+    . ' WHERE a.col1 > :k1'
+    . ' AND (a.col2 = :k2 OR a.col3 = :k3)'
+    . ' AND a.col4 = :k4'
+    . ' GROUP BY a.col1 ASC'
+    . ' ORDER BY a.col2 DESC'
+    . ' LIMIT 28 OFFSET 3',
+    $dsb->sql()
+```
+
+insert sql builder
+```php
+<?php
+ $isb = $cnn->isb()
+    ->insert('tableA')
+    ->field('col1', 'col2', 'col3')
+    ->value()
+        ->addInt(2)
+        ->addStr('val2')
+        ->addDateTime(new \DateTime('2018-3-10'))
+    ->end()
+    ->value()
+        ->addInt(3)
+        ->addStr('val22')
+        ->addDateTime(new \DateTime('2018-3-10'))
+    ->end();
+$this->assertEquals(
+    'INSERT INTO tableA'
+    . ' (col1, col2, col3)'
+    . ' VALUES '
+    . '(:k1, :k2, :k3)'
+    . ', (:k4, :k5, :k6)',
+    $isb->sql()
+);
+```
+
+Update Sql Builder
+
+```php
+<?php
+$usb = $cnn->usb()
+    ->update('tableA a', 'tableB b')->end()
+    ->set('a.col1')->expr('b.col1')
+    ->set('a.col2')->str('val2')
+    ->set('a.col3')->int(3);
+$this->assertEquals(
+    'UPDATE tableA a, tableB b'
+    . ' SET a.col1 = b.col1, a.col2 = :k1, a.col3 = :k2',
+    $usb->sql()
+);
+
+$usb = $cnn->usb()
+    ->update('tableA a', 'tableB b')
+        ->leftJoin('tableC c', 'tableD d')
+        ->onCond()
+            ->expect('c.col1')->equal()->expr('a.col1')
+            ->andExpect('d.col2')->equal()->expr('b.col2')
+        ->endJoin()
+    ->end()
+    ->set('a.col1')->expr('b.col1')
+    ->set('a.col2')->str('val2')
+    ->set('a.col3')->int(3)
+    ->where()
+        ->expect('a.col1')->equal()->str('v1')
+    ->end();
+$this->assertEquals(
+    'UPDATE tableA a, tableB b'
+    . ' LEFT JOIN tableC c, tableD d ON c.col1 = a.col1 AND d.col2 = b.col2'
+    . ' SET a.col1 = b.col1, a.col2 = :k1, a.col3 = :k2'
+    . ' WHERE a.col1 = :k3',
+    $usb->sql()
+);
+```
+
+
+
+Sql Syntax
+- select <https://dev.mysql.com/doc/refman/5.7/en/select.html>
+- insert <https://dev.mysql.com/doc/refman/5.7/en/insert.html>
+- delete <https://dev.mysql.com/doc/refman/5.7/en/delete.html>
+- update <https://dev.mysql.com/doc/refman/5.7/en/update.html>
+
+```sql
+SELECT $selectArr
+    FROM $tablePart
+    WHERE $condPart
+    GROUP BY $groupByArr
+    ORDER BY $orderByArr
+    LIMIT $limit
+    OFFSET $offset
+
+INSERT $fieldArr
+    INTO $into
+    VALUES $valuePartArr
+
+DELETE $deleteArr
+    FROM $tablePart
+    WHERE $condPart
+    ORDER BY $orderByArr
+    LIMIT $limit
+
+UPDATE $tablePart
+    SET $setPartArr
+    WHERE $condPart
+    ORDER BY $orderByArr
+    LIMIT $limit
+```
+
+**$condPart**
+
+```
+[$expectPart, $expectPart ... $condPart, $condPart ...]
+```
+
+**tablePart**
+```
+$tableArr + $joinPartArr
+
+$tableArr: 'tableA a', 'tableB b' ...
+$joinPartArr:
+[
+    $joinPart1: LEFT JOIN $tableArr ON $condPart
+    $joinPart2: INNER JOIN ...
+    ...
+]
+```
+
 ## Testing
 
 ```
