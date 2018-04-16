@@ -123,7 +123,7 @@ $ composer gap listApp
 Remove App
 
 ```shell
-$ composer removeApp 'Gap\Project'
+$ composer gap removeApp 'Gap\Project'
 ```
 
 ## Manage Module
