@@ -4,7 +4,7 @@ $localeKey = $this->getLocaleKey();
 $pageConfig = $this->pageConfig ? $this->pageConfig : [];
 $pageConfig = array_merge($pageConfig, [
     'localeKey' => $localeKey,
-    'now' => micro_date()
+    'now' => new \Gap\Dto\DateTime()
 ]);
 ?><!DOCTYPE html>
 <html lang="<?php echo $localeKey; ?>" prefix="og: http://ogp.me/ns#">

@@ -55,7 +55,7 @@ if (false === $config->bool('debug')) {
 }
 $router = $routerBuilder->build();
 
-$siteManager = new \Gap\Http\SiteManager($config->arr('site'));
+$siteManager = new \Gap\Routing\SiteManager($config->arr('site'));
 $httpHandler = new \Gap\Base\HttpHandler($app, $siteManager, $router);
 
 foreach ($config->arr('requestFilter') as $requestFilterClass) {
