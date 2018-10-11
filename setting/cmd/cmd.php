@@ -5,9 +5,6 @@ return [
     //
     'jsonifySetting' => 'Gap\Util\Setting\Cmd\JsonifySettingCmd',
 
-    'printRouteMap' => 'Gap\Util\Routing\Cmd\PrintRouteMapCmd',
-    'listRoute' => 'Gap\Util\Routing\Cmd\ListRouteCmd',
-
     'buildApp' => 'Gap\Util\Coder\Cmd\BuildAppCmd',
     'removeApp' => 'Gap\Util\Coder\Cmd\RemoveAppCmd',
     'listApp' => 'Gap\Util\Coder\Cmd\ListAppCmd',
