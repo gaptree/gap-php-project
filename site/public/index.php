@@ -62,8 +62,8 @@ foreach ($config->arr('requestFilter') as $requestFilterClass) {
     $httpHandler->getRequestFilterManager()->addFilter(new $requestFilterClass());
 }
 
-foreach ($config->arr('routeFilter') as $routeFilterClass) {
-    $httpHandler->getRouteFilterManager()->addFilter(new $routeFilterClass());
+foreach ($config->arr('routeFilter') as $filterName => $routeFilterClass) {
+    $httpHandler->getRouteFilterManager()->addFilter($filterName, new $routeFilterClass());
 }
 
 //
